@@ -9,7 +9,7 @@ CREATE TABLE author_info(
 -- end, variable region start and end.
 CREATE TABLE sequence_info (
     sequence_id         TEXT PRIMARY KEY,
-    sequence_seq        TEXT,
+    hairpin_seq         TEXT,
     edit_A_idx          INT,
     edit_region_start   INT,
     edit_region_end     INT,
