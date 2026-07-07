@@ -155,7 +155,7 @@ def set_sequence():
             edit_reg_start, edit_reg_end, var_reg_start, var_reg_end
         )
     else:
-        return set_sequence():
+        return set_sequence()
 
 
 # EMERGE REGISTRATION --- --- --- --- --- --- --- --- --- --- --- --- --- ---

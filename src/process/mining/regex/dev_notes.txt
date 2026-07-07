@@ -1,0 +1,15 @@
+Dev notes
+Anthony Surkov (asurkov@cmu.edu) 07/07/2026
+
+regexhelper.py
+- No checks for basic validity currently provided. e.g. checking that the
+  left flank comes before the right flank.
+    - should be easy to check, with sim. logic to target_region_length
+      computation
+- No checks for overlapping selections; renderer does not display overlapped
+  selections despite responses dict accepting it fine. This can break
+  downstream regex and is currently left as user error
+
+ngsregex.py
+- Could implement a warning for low rate of return (wasting 10-30 min on a
+  false pattern is annoying)

@@ -1,0 +1,201 @@
+,5to3,target,comment,valid_manual
+0,CGATCGCTA,NA,target ablated,0
+1,NA,NA,complementary,0
+2,NA,NA,complementary,0
+3,NA,NA,complementary,0
+4,NA,NA,complementary,0
+5,NA,NA,truncated,0
+6,GGGCCACTC,AAA,perfect,1
+7,TGACCGTTG,AAA,perfect,1
+8,AGCGCAACT,AAA,perfect,1
+9,NA,NA,complementary,0
+10,NA,NA,complementary,0
+11,NA,NA,complementary,0
+12,NA,NA,truncated,0
+13,NA,NA,truncated,0
+14,NA,NA,truncated,0
+15,NA,NA,truncated,0
+16,GCGATGCAA,GAA,perfect,1
+17,GAATCCCTG,GAA,deletion 3' of target; deletion 3' of N9,1
+18,NA,NA,truncated,0
+19,NA,NA,complementary,0
+20,GCGACAGGG,AAA,missense in flank 3' of target,1
+21,NA,NA,complementary,0
+22,CAGGCCCGA,AAA,perfect,1
+23,NA,NA,truncated,0
+24,ACACCTGAG,GAA,perfect,1
+25,GCAGCTCTG,CAA,missense in flank 3' of target; malformed flank 5' of target,0
+26,GCATGCTGG,AAA,perfect,1
+27,NA,NA,complementary,0
+28,NA,NA,truncated,0
+29,GTGCCTGAA,AAA,deletion 3' of target; missense 5' of target,1
+30,NA,NA,truncated,0
+31,NA,NA,complementary,0
+32,NA,NA,truncated,0
+33,NA,NA,complementary,0
+34,NA,NA,truncated,0
+35,NA,NA,truncated,0
+36,NA,NA,truncated,0
+37,CTTACGTGG,AAA,missense in flank 3' of N9,1
+38,CCACCAACC,NA,target ablated,0
+39,ACACCTGAG,GAA,perfect,1
+40,AAGGCGTGG,AAA,missense in flank 3' of target,1
+41,NA,NA,complementary,0
+42,GATGCGGGC,GAA,missense in flank 3' of N9,1
+43,NA,NA,truncated,0
+44,NA,NA,complementary,0
+45,NA,NA,complementary,0
+46,NA,NA,complementary,0
+47,NA,NA,truncated,0
+48,NA,NA,complementary,0
+49,NA,NA,complementary,0
+50,NA,NA,complementary,0
+51,TAGCCGCTA,AAA,missense in flank 3' of N9,1
+52,NA,NA,truncated,0
+53,AGGGCACCA,AAA,missense in flank 5' of target,1
+54,GGTGCGGAT,AAA,perfect,1
+55,CTTACGTGG,AAA,perfect,1
+56,NA,NA,complementary,0
+57,GAACCGAAG,AAA,perfect,1
+58,NA,NA,truncated,0
+59,NA,NA,complementary,0
+60,GGGACGGCC,AAA,perfect,1
+61,NA,NA,truncated,0
+62,NA,NA,complementary,0
+63,NA,NA,truncated,0
+64,NA,NA,truncated,0
+65,CCGCCTTTC,GAA,deletion in flank 5' of N9; deletion in flank 5' of target,1
+66,CAGTCGGCG,AAA,perfect,1
+67,NA,NA,truncated,0
+68,ATAGCGGGG,NA,missense in flank 5' of N9; target ablated,0
+69,TAACCGGCT,AAA,perfect,1
+70,NA,NA,truncated,0
+71,NA,NA,complementary,0
+72,NA,NA,complementary,0
+73,NA,NA,complementary,0
+74,NA,NA,truncated,0
+75,NA,NA,complementary,0
+76,NA,NA,complementary,0
+77,ACCGCGACA,AAA,perfect,1
+78,GGCCCTCGG,GAA,deletion in flank 5' of target,1
+79,NA,NA,complementary,0
+80,TCGTCCTGC,AAA,perfect,1
+81,ACGACGATG,AAG,missense in flank 3' of N9; target ablated,0
+82,GTGCCTTCT,AAA,missense in flank 3' of N9,1
+83,NA,NA,truncated,0
+84,GTACCGGGG,AAA,perfect,1
+85,TGATACACT,AAA,missense in flank 3' of N9; missense in flank 5' of target,1
+86,GGGGCATAA,AAA,perfect,1
+87,NA,NA,truncated,0
+88,NA,NA,complementary,0
+89,CAGGCGGGG,NA,target region ablated,0
+90,NA,NA,truncated,0
+91,NA,NA,complementary,0
+92,NA,NA,complementary,0
+93,NA,NA,complementary,0
+94,GGGGTCTCA,AAA,missense in flank 5' of N9; missense in flanks about target,1
+95,NA,NA,complementary,0
+96,ACCGCGACA,AAA,perfect,1
+97,GGAGCAGTG,AAA,perfect,1
+98,NA,NA,complementary,0
+99,GCGGCTGGG,AAA,perfect,1
+100,NA,NA,truncated,0
+101,NA,NA,truncated,0
+102,NA,NA,truncated,0
+103,NA,NA,complementary,0
+104,GCGCACGCT,AAA,perfect,1
+105,NA,NA,truncated,0
+106,NA,NA,complementary,0
+107,NA,NA,complementary,0
+108,NA,NA,truncated,0
+109,NA,NA,complementary,0
+110,NA,NA,complementary,0
+111,GGATCTGGC,GAA,deletion in flank 3' of target,1
+112,GCTGCCAGC,AAA,perfect,1
+113,NA,NA,complementary,0
+114,NA,NA,truncated,0
+115,NA,NA,truncated,0
+116,NA,NA,truncated,0
+117,NA,NA,complementary,0
+118,NA,NA,complementary,0
+119,NA,NA,complementary,0
+120,CAGTCGGTG,AAA,ablation of flank 5' of N9; missense in flank 3' of target,1
+121,NA,NA,truncated,0
+122,NA,NA,complementary,0
+123,NA,NA,truncated,0
+124,NA,NA,truncated,0
+125,NA,NA,complementary,0
+126,NA,NA,complementary,0
+127,GCGACTACT,GAA,missense 5' of target,1
+128,NA,NA,truncated,0
+129,NA,NA,complementary,0
+130,NA,NA,complementary,0
+131,NA,NA,complementary,0
+132,NA,NA,complementary,0
+133,NA,NA,complementary,0
+134,NA,NA,complementary,0
+135,NA,NA,complementary,0
+136,NA,NA,complementary,0
+137,NA,NA,complementary,0
+138,NA,NA,truncated,0
+139,NA,NA,complementary,0
+140,TGGGCGATG,AAA,perfect,1
+141,TGGGCGATG,AAA,perfect; possibility of doubled reads in sequence?,1
+142,GACTCAGTG,AAA,perfect,1
+143,NA,NA,complementary,0
+144,TCGACGAGC,AAA,perfect,1
+145,GCGCACGCT,AAA,perfect,1
+146,NA,NA,truncated,0
+147,NA,NA,complementary,0
+148,NA,NA,complementary,0
+149,NA,NA,complementary,0
+150,AATCCATCA,AAA,missense in flank 5' of N9; deletion in flank 3' of target,1
+151,NA,NA,truncated,0
+152,NA,NA,complementary,0
+153,GTAACAGCA,AAA,perfect,1
+154,GGTGCACTT,NA,target ablated,0
+155,NA,NA,complementary,0
+156,GGATCGGTG,AAA,perfect,1
+157,GGATCGGTG,AAA,perfect; possibility of doubled reads in sequence?,1
+158,NA,NA,complementary,0
+159,NA,NA,complementary,0
+160,NA,NA,complementary,0
+161,NA,NA,complementary,0
+162,NA,NA,complementary,0
+163,NA,NA,complementary,0
+164,GGGGCCCTG,NA,missense in flank 3' of N9; target ablated,0
+165,NA,NA,truncated,0
+166,GGTGCCTAT,AAA,missense in flank 5' of target,1
+167,NA,NA,complementary,0
+168,NA,NA,complementary,0
+169,CAGGCCGTC,AAA,perfect,1
+170,NA,NA,complementary,0
+171,TAGACACAG,AAA,ablation in flank 5' of target,1
+172,TGCCCGGCT,AAA,missense in flanks about target,1
+173,TCGCCCGGA,AAA,missense in flank 3' of N9,1
+174,GAAGCGGGC,AGA,missense in hairpin loop,1
+175,NA,NA,complementary,0
+176,NA,NA,truncated,0
+177,NA,NA,complementary,0
+178,AGGGAGAGG,AAA,missense in flank 5' of N9,1
+179,GGCTCCAGT,AAA,perfect,1
+180,CGGGCGGTG,AAA,perfect,1
+181,NA,NA,complementary,0
+182,TTGACCTGG,GAA,perfect,1
+183,ACAACACCT,AAA,missense in flank 5' of target,1
+184,NA,NA,truncated,0
+185,GACACCCAT,AAA,perfect,1
+186,NA,GAA,N9 ablated,0
+187,NA,NA,complementary,0
+188,NA,NA,complementary,0
+189,NA,NA,complementary,0
+190,NA,NA,complementary,0
+191,NA,NA,complementary,0
+192,NA,NA,complementary,0
+193,NA,NA,complementary,0
+194,GGTGCGGGG,GAA,perfect,1
+195,TCACCCCAA,AAA,missense in flank 3' of target,1
+196,NA,NA,truncated,0
+197,NA,NA,complementary,0
+198,ACCTCTTCC,AAA,perfect,1
+199,NA,NA,complementary,0
