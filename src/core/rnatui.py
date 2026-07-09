@@ -21,7 +21,7 @@ class _HTMLLexer(Lexer):
     ``locked_positions`` so that key bindings can skip over them.
     """
 
-    def __init__(self, html_text: str):
+    def __init__(self, html_text: str, allow_overlap: set[int] | None = None):
         self._html_text = html_text
         formatted = to_formatted_text(HTML(html_text))
         chars: list[tuple[str, str]] = []
@@ -30,7 +30,7 @@ class _HTMLLexer(Lexer):
         for style, text, *_ in formatted:
             for ch in text:
                 chars.append((style, ch))
-                if style:
+                if style and (allow_overlap is None or pos not in allow_overlap):
                     locked.add(pos)
                 pos += 1
         self._chars = chars
@@ -74,11 +74,11 @@ class _HTMLLexer(Lexer):
 
 
 class RNA_Prompter:
-    def __init__(self, rna_sequence: str, system_prompt: str, initial_cursor_position: int | None = None):
+    def __init__(self, rna_sequence: str, system_prompt: str, initial_cursor_position: int | None = None, allow_overlap: set[int] | None = None):
         self.rna_sequence = rna_sequence
         self.system_prompt = system_prompt
 
-        self._lexer = _HTMLLexer(rna_sequence)
+        self._lexer = _HTMLLexer(rna_sequence, allow_overlap=allow_overlap)
         locked = self._lexer.locked_positions
 
         def _step(pos: int, direction: int) -> int:

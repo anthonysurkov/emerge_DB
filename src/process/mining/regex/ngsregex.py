@@ -7,8 +7,8 @@ import re
 import os
 from tqdm import tqdm
 
-from regexhelper import prompt_for_regex
-from rnatui import RNA_Prompter
+from .regexhelper import prompt_for_regex
+from core.rnatui import RNA_Prompter
 
 REGEX_CHUNK_SIZE  = 10000
 TEMPFILE_MAX_SIZE = 5 * 1024**3

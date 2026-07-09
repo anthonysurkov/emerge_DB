@@ -5,7 +5,7 @@ import questionary
 from prompt_toolkit import print_formatted_text
 from prompt_toolkit.formatted_text import HTML
 
-from rnatui import RNA_Prompter
+from core.rnatui import RNA_Prompter
 
 # advanced config
 left_target_flank_errornum  = 1
@@ -86,7 +86,7 @@ BASE_SYSTEM_PROMPT = (
     "  <ansimagenta>██</ansimagenta> Linker loop\n"
     "  <ansigreen>██</ansigreen> Left variable flank\n"
     "  <ansired>██</ansired> Right variable flank\n\n"
-    "Note: this system will not double-check the biological validity of your "
+    "Note: this system will not double-check the validity of your "
     "entry.\n"
     "      This includes screening for potentially nonsensical selections, "
     "such as the left flank being\n"

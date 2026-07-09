@@ -3,6 +3,13 @@ from pathlib import Path
 from core.files import FileHandle
 from process.data import DataHandle
 
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit import print_formatted_text
+from process.mining.regex.regexhelper import BASE_SYSTEM_PROMPT
+
+print_formatted_text(HTML(BASE_SYSTEM_PROMPT))
+
+"""
 def method_one(file: Path) -> str:
     print("method one!")
     return "method_one_id"
@@ -20,3 +27,4 @@ test_dh.queue_method(method_two)
 test_dh.run_pipeline()
 log = test_dh.log
 print(log)
+"""
