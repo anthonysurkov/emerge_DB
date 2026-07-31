@@ -1,8 +1,7 @@
 import questionary
-from dataclasses import dataclass
 
-import db.interface as database
 from core.session import Session
+from core.styles import MENU_STYLE
 import core.accounts as account
 import core.sequences as seqs
 import core.query as query
@@ -82,3 +81,19 @@ def compose_main_menu(session: Session) -> tuple[dict[str, str], list]:
         ),
     ]
     return (menu, choices)
+
+def run_main_menu(session: Session) -> None:
+    while True:
+        menu, choices = compose_main_menu(session)
+
+        choice = questionary.select(
+            message="",
+            choices=choices,
+            style=MENU_STYLE,
+        ).ask()
+
+        if choice == "Quit" or choice is None:
+            return
+
+        print()
+        menu[choice]()
