@@ -41,13 +41,13 @@ class DataConditions:
         selection = selection[0].upper() + selection[1:]
         return f"{selection} from {screens}."
 
-def show_top(conditions: DataConditions) -> None:
+def print_top_ten(conditions: DataConditions) -> None:
     df = database.get_screens_by_metadata(
         authors = conditions.authors,
         target_ids = conditions.targets,
         seqs = conditions.sequences
     )
-    print(df.nlargest(20, "mle"))
+    print(df.sort_values(by="mle", ascending=False).head(10))
 
 def export(conditions: DataConditions) -> FileHandle | None:
     df = database.get_screens_by_metadata(
@@ -55,6 +55,10 @@ def export(conditions: DataConditions) -> FileHandle | None:
         target_ids = conditions.targets,
         seqs = conditions.sequences
     )
+    if df is None:
+        print("Query returned no entries!")
+        return None
+
     filename = questionary.text(
         "Filename [ending in .csv]:"
     ).ask()
@@ -68,7 +72,7 @@ def export(conditions: DataConditions) -> FileHandle | None:
         return None
 
     df.to_csv(filename, index=None)
-    fh = FileHandle(path)
+    fh = FileHandle(path, use_zip=False)
     fh.activate()
     print(f"Exported to {fh.path}")
 
@@ -84,7 +88,7 @@ def nl_subquery_seq(conditions: DataConditions) -> list[str] | None:
         if sequence.strip()
     ]
     confirm = questionary.confirm(
-        f"Confirm sequences added to query:\n {', '.join(seqs)}"
+        f"Confirm sequences to add to query:\n {', '.join(seqs)}"
     ).ask()
     if confirm:
         conditions.sequences.extend(seqs)
@@ -120,32 +124,42 @@ def nl_subquery_targets(conditions: DataConditions) -> list[str] | None:
         conditions.targets.extend(response)
     return None
 
+def nl_query_clear(conditions: DataConditions) -> None:
+    conditions.authors = []
+    conditions.targets = []
+    conditions.sequences = []
+    return None
+
 def nl_query_menu(): # (natural language)
     conditions = DataConditions()
     while True:
+        print("\nTop 10 sequences of selected query:")
+        print_top_ten(conditions)
+        print()
         menu = {
-            "Show top-20 (by MLE, descending) of selected query":
-                lambda: (show_top(conditions)),
             "Export selected query to CSV":
                 lambda: (export(conditions)),
-            "Query by sequence(s)":
-                lambda: (nl_subquery_seq(conditions)),
-            "Query by author(s)":
+            "Clear query":
+                lambda: (nl_query_clear(conditions)),
+            "Add author(s)":
                 lambda: (nl_subquery_authors(conditions)),
-            "Query by target ID(s)":
-                lambda: (nl_subquery_targets(conditions))
+            "Add target ID(s)":
+                lambda: (nl_subquery_targets(conditions)),
+            "Add sequence(s)":
+                lambda: (nl_subquery_seq(conditions)),
         }
         choices = [
-            questionary.Separator(f"Query: {conditions.message()}"),
+            questionary.Separator(f"Current query: {conditions.message()}"),
             questionary.Separator(" "),
-            "Show top-20 (by MLE, descending) of selected query",
             "Export selected query to CSV",
             questionary.Separator(" "),
-            "Query by sequence(s)",
-            "Query by author(s)",
-            "Query by target ID(s)",
+            "Clear query",
+            "Add author(s)",
+            "Add target ID(s)",
+            "Add sequence(s)",
             questionary.Separator(" "),
-            "Go back"
+            "Go back",
+            questionary.Separator(" ")
         ]
         choice = questionary.select(
             message="",

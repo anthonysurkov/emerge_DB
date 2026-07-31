@@ -6,7 +6,7 @@ from pathlib import Path
 from core.paths import ACTIVE_DIR, STORAGE_DIR
 
 class FileHandle:
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, use_zip: bool = True):
         if not path.exists():
             raise ValueError(f"Source filepath does not exist: {path}"
             )
@@ -23,6 +23,7 @@ class FileHandle:
                 f"Verify permissions."
             )
         self.path = path
+        self.use_zip = use_zip
 
     @staticmethod
     def write_allowed(destination: Path):
@@ -64,7 +65,6 @@ class FileHandle:
                 f"{self.path}\n{dst}"
             )
 
-
         self.path.unlink()
         self.set_path(dst)
 
@@ -99,7 +99,12 @@ class FileHandle:
         self.set_path(dst)
 
     def move(self, dst: Path):
-        self.zip() # returns if already zipped
+        if self.use_zip:
+            self.zip() # returns if already zipped
+
+        if ".gz" in self.path.suffixes and ".gz" not in dst.suffixes:
+            dst = dst.with_suffix(dst.suffix + ".gz")
+
         if not self.write_allowed(dst.parent):
             raise ValueError(f"Destination file ({dst}) not writable. "
                 f"Verify permissions."
@@ -110,11 +115,10 @@ class FileHandle:
 
         path = self.path
         try:
-            with gzip.open(path, "rb") as f_in, gzip.open(dst, "wb") as f_out:
-                shutil.copyfileobj(f_in, f_out)
+            shutil.copyfile(path, dst)
         except Exception:
             dst.unlink(missing_ok=True)
-            raise ValueError(f"copyfileobj failed midway during file activation"
+            raise ValueError(f"copyfile failed midway during file activation"
                 f". Check if sufficient "
                 f"memory in relevant drive. Paths involved:\n"
                 f"{self.path}\n{dst}"
@@ -151,5 +155,3 @@ class FileHandle:
 
         dst = STORAGE_DIR / self.path.name
         self.move(dst)
-
-
