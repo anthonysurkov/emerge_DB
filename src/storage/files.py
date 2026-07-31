@@ -2,8 +2,22 @@ import os
 import gzip
 import shutil
 import filecmp
+from dataclasses import dataclass
 from pathlib import Path
 from storage.paths import ACTIVE_DIR, STORAGE_DIR
+
+
+@dataclass
+class PairedEndHandle:
+    r1: FileHandle
+    r2: FileHandle
+
+    def job_kwargs(self) -> dict[str, Path]:
+        return {
+            "read1": self.r1.path,
+            "read2": self.r2.path,
+        }
+
 
 class FileHandle:
     def __init__(self, path: Path, use_zip: bool = True):
@@ -28,6 +42,9 @@ class FileHandle:
     @staticmethod
     def write_allowed(destination: Path):
         return os.access(destination, os.W_OK)
+
+    def job_kwargs(self) -> dict[str, Path]:
+        return {"file": self.path}
 
     def collides(self, destination: Path, filepath: Path = None):
         if filepath is None:

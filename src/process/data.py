@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime
 import inspect
 
-from storage.files import FileHandle
+from storage.files import FileHandle, PairedEndHandle
 
 
 def job_desc(job) -> str:
@@ -26,8 +26,8 @@ class JobLog:
 
 
 class DataHandle:
-    def __init__(self, fh: FileHandle):
-        self.fh = fh
+    def __init__(self, source: FileHandle | PairedEndHandle):
+        self.source = source
         self.jobs: deque[Callable[..., Any]] = deque()
         self.log: list[JobLog] = []
 
@@ -49,7 +49,7 @@ class DataHandle:
             started_at = datetime.now()
 
             try:
-                result = job(file=self.fh.path)
+                result = job(file=self.source.path)
                 self.log.append(
                     JobLog(job_desc(job), started_at, result=result)
                 )
