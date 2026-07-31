@@ -7,8 +7,8 @@ CREATE TABLE author_info(
 -- Targets information:
 -- ID (e.g. r255x), full hairpin sequence, edit-A index, edit region start and
 -- end, variable region start and end.
-CREATE TABLE sequence_info (
-    sequence_id         TEXT PRIMARY KEY,
+CREATE TABLE hairpin_info (
+    target_id           TEXT PRIMARY KEY,
     hairpin_seq         TEXT,
     edit_A_idx          INT,
     edit_region_start   INT,
@@ -35,7 +35,7 @@ CREATE TABLE methods_info (
 -- processing.
 CREATE TABLE screen_metadata (
     screen_id           SERIAL PRIMARY KEY,
-    sequence_id         TEXT REFERENCES sequence_info(sequence_id),
+    target_id         TEXT REFERENCES hairpin_info(target_id),
     author              TEXT REFERENCES author_info(author),
     submission_date     TIMESTAMP,
     num_reads_ordered   INT,

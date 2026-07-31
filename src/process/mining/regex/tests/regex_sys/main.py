@@ -1,4 +1,4 @@
-from ngsregex import regex_main
+from process.mining.regex.ngsregex import regex_main
 
 def main():
     """

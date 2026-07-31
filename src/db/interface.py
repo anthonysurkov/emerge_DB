@@ -1,5 +1,6 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import pandas as pd
 
 def get_conn():
     return psycopg2.connect("postgresql://localhost/emerge")
@@ -16,13 +17,15 @@ def db_query_one(query: str, params: tuple = ()) -> dict | None:
             cur.execute(query, params)
             return cur.fetchone() if cur.description else None
 
-# AUTHOR MANAGEMENT --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+# AUTHOR I/O --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 def get_authors() -> list:
     return [row["author"] for row in db_query("SELECT author FROM author_info")]
 
 def insert_author(author: str, email: str) -> None:
     db_query(
-        "INSERT INTO author_info (author, email) VALUES (%s, %s)",
+        "INSERT INTO author_info (author, email)"
+        "VALUES (%s, %s)"
+        "ON CONFLICT (author) DO UPDATE SET email = EXCLUDED.email",
         (author, email,)
     )
 
@@ -36,12 +39,13 @@ def remove_author(author: str) -> bool:
     except psycopg2.errors.ForeignKeyViolation:
         return False
 
-# SEQUENCE MANAGEMENT --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-def get_sequence_ids() -> list[str]:
-    return db_query("SELECT sequence_id FROM sequence_info")
+# SEQUENCE I/O --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+def get_target_ids() -> list[str]:
+    rows = db_query("SELECT target_id FROM hairpin_info")
+    return [row["target_id"] for row in rows]
 
-def insert_sequence_info(
-    sequence_id: str,
+def insert_hairpin_info(
+    target_id: str,
     hairpin_seq: str,
     edit_A_idx: int,
     edit_reg_start: int,
@@ -50,10 +54,11 @@ def insert_sequence_info(
     var_reg_end: int
 ) -> bool:
     try:
-        db_query("INSERT INTO sequence_info (sequence_id, hairpin_seq, "
+        db_query("INSERT INTO hairpin_info (target_id, hairpin_seq, "
             "edit_a_idx, edit_region_start, edit_region_end, var_region_start, "
             "var_region_end) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (sequence_id, hairpin_seq,
+            (
+                target_id, hairpin_seq,
                 edit_A_idx, edit_reg_start, edit_reg_end,
                 var_reg_start, var_reg_end,
             )
@@ -62,13 +67,20 @@ def insert_sequence_info(
         return False
     return True
 
-# SCREEN MANAGEMENT --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-def get_screen(screen_id: int) -> dict:
-    rows = db_query(
-        "SELECT * FROM screen_metadata WHERE screen_id = %s",
-        (screen_id,)
+# SCREEN I/O --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+def get_screens_overview() -> dict[int, str]:
+    screen_ids = db_query("SELECT DISTINCT screen_id FROM emerge_data")
+    ids = tuple(row["screen_id"] for row in screen_ids)
+    if not ids:
+        return None
+    target_ids = db_query(
+        "SELECT target_id, author FROM screen_metadata "
+        "WHERE screen_id IN %s",
+        (ids,)
     )
-    return rows[0] if rows else None
+    if target_ids is None:
+        return None
+    return dict(zip(screen_ids, target_ids))
 
 def insert_emerge_data(screen_id: int, seq: str, n: int, k: int, mle: float):
     with get_conn() as conn:
@@ -79,3 +91,38 @@ def insert_emerge_data(screen_id: int, seq: str, n: int, k: int, mle: float):
                 (screen_id, seq, n, k, mle)
             )
         conn.commit()
+
+def get_screens_by_metadata(
+    authors: list[str] = None,
+    target_ids: list[str] = None,
+    seqs: list[str] = None
+) -> pd.DataFrame:
+    conditions = []
+    params = []
+
+    if authors:
+        conditions.append("sm.author = ANY(%s)")
+        params.append(authors)
+    if target_ids:
+        conditions.append("sm.target_id = ANY(%s)")
+        params.append(target_ids)
+    if seqs:
+        conditions.append("ed.seq = ANY(%s)")
+        params.append(seqs)
+
+    where_clause = (
+        f"WHERE {' AND '.join(conditions)}"
+        if conditions
+        else ""
+    )
+    query = f"""
+        SELECT sm.author, sm.target_id,
+               ed.screen_id, ed.seq, ed.n, ed.k, ed.mle
+        FROM emerge_data AS ed
+        JOIN screen_metadata AS sm
+          ON sm.screen_id = ed.screen_id
+        {where_clause}
+        ORDER BY ed.screen_id, ed.id
+    """
+    rows = db_query(query, tuple(params))
+    return pd.DataFrame(data=rows)
