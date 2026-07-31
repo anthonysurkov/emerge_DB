@@ -1,27 +1,17 @@
 #!/usr/bin/env bash
 
-# Author: Anthony Surkov (anthonysurkov@gmail.com)
-# Aug 24, 2025
-
-# Config
 PROJ="$1"
 PRIMER_3P="$2"
 PRIMER_5P="$3"
 
-if [[ -z ${4-} ]]; then
-	RECIP_BOOL="false"
-else
-	RECIP_BOOL="true"
-	RECIPIENT=$4
-fi
 [[ -z ${1-} ]] && {
-	echo "error: missing project name (arg 1). To use htstream_automator, please enter: htstream_auto [project name] [3' primer sequence] [5' primer sequence] [email (optional)]" >&2; exit 1; 
+	echo "error: missing project name (arg 1). To use htstream_automator, please enter: htstream_auto [project name] [3' primer sequence] [5' primer sequence]" >&2; exit 1;
 }
 [[ -z ${2-} ]] && {
-	echo "error: missing 3' primer sequence (arg 3) To use htstream_automator, please enter: htstream_auto [project name] [3' primer sequence] [5' primer sequence] [email (optional)]" >&2; exit 1; 
+	echo "error: missing 3' primer sequence (arg 3) To use htstream_automator, please enter: htstream_auto [project name] [3' primer sequence] [5' primer sequence]" >&2; exit 1;
 }
 [[ -z ${3-} ]] && {
-	echo "error: missing 5' primer sequence (arg 4) To use htstream_automator, please enter: htstream_auto [project name] [3' primer sequence] [5' primer sequence] [email (optional)]" >&2; exit 1; 
+	echo "error: missing 5' primer sequence (arg 4) To use htstream_automator, please enter: htstream_auto [project name] [3' primer sequence] [5' primer sequence]" >&2; exit 1;
 }
 
 if [ -d "$(pwd)/input" ]; then
@@ -43,9 +33,6 @@ mkdir "$(pwd)/output"
 mv "$(pwd)"/*_R1_* "$(pwd)/input/"
 mv "$(pwd)"/*_R2_* "$(pwd)/input/"
 
-if [ $RECIP_BOOL = "true" ]; then
-	echo "$RECIPIENT will be contacted when the job is complete."
-fi
 echo "Running HT Stream preprocessing steps for ${PROJ}."
 echo "Please do not close this terminal instance!"
 echo "Enter ctrl+C at any time to abort process."
@@ -102,9 +89,3 @@ hts_Stats \
 	-U "./mid"/*Length*SE* --force \
 	--fastq-output "./output/${PROJ}_preprocessed"
 echo "HTS Stats done! (7 of 7)"
-
-if [ $RECIP_BOOL = "true" ]; then
-	SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-	python3 "${SCRIPT_DIR}/emailer.py"
-fi
-

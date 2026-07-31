@@ -9,7 +9,7 @@ from db.interface import db_query
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587 # standard client submission port
 
-def email_user(file: Path) -> None:
+def email_user(file: Path, author: str) -> None:
     recipient = db_query(
         "SELECT a.email "
         "FROM screen_metadata s "

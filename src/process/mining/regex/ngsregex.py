@@ -6,9 +6,10 @@ import regex
 import re
 import os
 from tqdm import tqdm
+from pathlib import Path
 
 from .regexhelper import prompt_for_regex
-from core.rnatui import RNA_Prompter
+from tui.rnatui import RNA_Prompter
 
 REGEX_CHUNK_SIZE  = 10000
 TEMPFILE_MAX_SIZE = 5 * 1024**3
@@ -158,8 +159,8 @@ def clean_outdir(outdir: str = None) -> None:
             return
 
 def regex_main(
+    infile: Path,
     rna_sequence: str,
-    infile: str,
     minimum_reads: int = 10,
     debug: bool = False
 ) -> pd.DataFrame:
@@ -176,4 +177,3 @@ def regex_main(
     clean_outdir()
 
     return df
-

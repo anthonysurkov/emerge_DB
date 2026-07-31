@@ -5,7 +5,7 @@ import questionary
 from prompt_toolkit import print_formatted_text
 from prompt_toolkit.formatted_text import HTML
 
-from core.rnatui import RNA_Prompter
+from tui.rnatui import RNA_Prompter
 
 # advanced config
 left_target_flank_errornum  = 1
@@ -188,4 +188,3 @@ def prompt_for_regex(
         varb_region_length           = varb_length
     )
     return (regexes, trgt_unedited, trgt_edited)
-
