@@ -1,7 +1,7 @@
-from core.menus import run_main_menu
-from core.session import Session
+from tui.menus import run_main_menu
+from tui.session import Session
 
-def main() -> None:
+def main():
     run_main_menu(Session())
 
 if __name__ == "__main__":
