@@ -1,4 +1,6 @@
-from process.data import DataHandle
+from pathlib import Path
+
+from process.data import DataHandle, JobLog
 
 # register_emerge needs to fill in screen_metadata then queue up processing
 # for either a fastq or csv
@@ -12,4 +14,9 @@ from process.data import DataHandle
 # all entries that are not (1) need methods selection from methods manager
 # so, implement methods manager first
 
-def register_emerge
+# R1/R2, preprocessed, or processed == entrypoint
+def prompt_for_entrypoint() -> tuple[Path, list[JobLog]]:
+    # foo
+
+def register_emerge():
+    # foo

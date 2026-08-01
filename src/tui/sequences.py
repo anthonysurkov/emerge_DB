@@ -29,19 +29,19 @@ def register_hairpin():
     if not tids:
         print("No hairpins/target IDs currently registered.\n")
     else:
-        print("Currently registered target IDs:")
-        for tid in tids:
-            print("• " + tid)
-        print()
-
-    print("Enter `exit` at any point to abort\n")
+        print("Currently registered target IDs:\n")
+        print("\n".join(
+            f"  {index}. {target_id}"
+            for index, target_id in enumerate(tids, start=1)
+        ))
+    print("\nEnter Ctrl+C at any point to abort\n")
 
     target_id = questionary.text(
         "Enter your target ID (derivative of the mutation "
         "studied; e.g. `r270x_z`, `r270x`, `r255x`). Please avoid dashes (`-`) "
         "and spaces! "
     ).ask()
-    if target_id == "exit" or target_id == None:
+    if target_id is None:
         return
     target_id = target_id.lower()
 
@@ -51,7 +51,7 @@ def register_hairpin():
             "Copy-paste your hairpin sequence (no quotes, indents, or "
             "5'- 3'- markers):"
         ).ask()
-        if hairpin_seq == "exit" or hairpin_seq == None:
+        if hairpin_seq is None:
             return
         hairpin_seq = (
             hairpin_seq
@@ -91,10 +91,7 @@ def register_hairpin():
 
 def get_registered_targets() -> list[str]:
     regis = database.get_target_ids()
-    if not regis:
-        return None
-    else:
-        return [row["target_id"] for row in regis]
+    return regis or None
 
 def prompt_for_sequence_regions(
     rna_sequence: str,
@@ -146,4 +143,3 @@ def prompt_for_sequence_regions(
         if questionary.confirm("Confirm selection?").ask():
             unconfirmed = False
     return responses
-

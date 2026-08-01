@@ -91,7 +91,7 @@ def manager(session: Session) -> None:
         choices=mgr_choices,
         style=MENU_STYLE,
     ).ask()
-    if choice == "Go back":
+    if choice == "Go back" or choice == None:
         return
     fn = mgr_menu[choice]
     print()

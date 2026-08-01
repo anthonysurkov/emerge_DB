@@ -26,10 +26,14 @@ class JobLog:
 
 
 class DataHandle:
-    def __init__(self, source: FileHandle | PairedEndHandle):
+    def __init__(
+        self,
+        source: FileHandle | PairedEndHandle,
+        log: JobLog = None
+    ):
         self.source = source
         self.jobs: deque[Callable[..., Any]] = deque()
-        self.log: list[JobLog] = []
+        self.log: list[JobLog] = [] if log is None else log
 
     def queue_method(self, method: Callable, *args, **kwargs) -> None:
         job = partial(method, *args, **kwargs)

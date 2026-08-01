@@ -5,6 +5,7 @@ from tui.styles import MENU_STYLE
 import tui.accounts as account
 import tui.sequences as seqs
 import tui.query as query
+import tui.methods as methods
 
 # DATA MANAGEMENT --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 def data_manager():
@@ -33,10 +34,6 @@ def register_emerge():
     sids = get_registered_sequences()
 """
 
-# METHODS MANAGEMENT --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-def methods_manager():
-    print("nuh-uh, not yet")
-
 # MAIN MENU --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 def compose_main_menu(session: Session) -> tuple[dict[str, str], list]:
     sign_label = "Sign out" if session.is_signed_in else "Sign in"
@@ -47,14 +44,14 @@ def compose_main_menu(session: Session) -> tuple[dict[str, str], list]:
             lambda: (sign_fxn(session)),
         "Get data":
             query.nl_query_menu,
-        "Register new sequence":
+        "Register new target sequence":
             seqs.register_hairpin,
         "Register new EMERGe screen":
             register_emerge,
         "Data management (e.g. edit sequences, screens)":
             data_manager,
         "Methods manager (e.g. change method write-ups)":
-            methods_manager,
+            methods.manager,
         "Account manager (e.g. delete account)":
             lambda: (account.manager(session)),
         "Quit": None
@@ -63,7 +60,7 @@ def compose_main_menu(session: Session) -> tuple[dict[str, str], list]:
         questionary.Separator(session.message()),
         sign_label,
         "Get data",
-        "Register new sequence",
+        "Register new target sequence",
         "Register new EMERGe screen",
         "Data management (e.g. edit sequences, screens)",
         "Methods manager (e.g. change method write-ups)",

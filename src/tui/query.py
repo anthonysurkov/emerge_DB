@@ -137,7 +137,7 @@ def nl_query_menu(): # (natural language)
         print_top_ten(conditions)
         print()
         menu = {
-            "Export selected query to CSV":
+            "Export queried data to CSV":
                 lambda: (export(conditions)),
             "Clear query":
                 lambda: (nl_query_clear(conditions)),
@@ -151,7 +151,7 @@ def nl_query_menu(): # (natural language)
         choices = [
             questionary.Separator(f"Current query: {conditions.message()}"),
             questionary.Separator(" "),
-            "Export selected query to CSV",
+            "Export queried data to CSV",
             questionary.Separator(" "),
             "Clear query",
             "Add author(s)",

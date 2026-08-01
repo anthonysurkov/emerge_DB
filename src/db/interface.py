@@ -1,7 +1,10 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import pandas as pd
+from pathlib import Path
 
+
+# CORE
 def get_conn():
     return psycopg2.connect("postgresql://localhost/emerge")
 
@@ -17,7 +20,8 @@ def db_query_one(query: str, params: tuple = ()) -> dict | None:
             cur.execute(query, params)
             return cur.fetchone() if cur.description else None
 
-# AUTHOR I/O --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+# AUTHOR I/O
 def get_authors() -> list:
     return [row["author"] for row in db_query("SELECT author FROM author_info")]
 
@@ -39,7 +43,8 @@ def remove_author(author: str) -> bool:
     except psycopg2.errors.ForeignKeyViolation:
         return False
 
-# SEQUENCE I/O --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+# SEQUENCE I/O
 def get_target_ids() -> list[str]:
     rows = db_query("SELECT target_id FROM hairpin_info")
     return [row["target_id"] for row in rows]
@@ -67,7 +72,8 @@ def insert_hairpin_info(
         return False
     return True
 
-# SCREEN I/O --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+# SCREEN I/O
 def get_screens_overview() -> dict[int, str]:
     screen_ids = db_query("SELECT DISTINCT screen_id FROM emerge_data")
     ids = tuple(row["screen_id"] for row in screen_ids)
@@ -126,3 +132,71 @@ def get_screens_by_metadata(
     """
     rows = db_query(query, tuple(params))
     return pd.DataFrame(data=rows)
+
+
+# METHOD I/O
+def insert_method_info(
+    method_name: str,
+    method_path: Path,
+    method_desc: str | None = None,
+    method_writeup_path: Path | None = None
+) -> None:
+    if not method_path.exists():
+        raise ValueError("method_path provided does not exist")
+    if method_writeup_path is not None and not method_writeup_path.exists():
+        raise ValueError("method_writeup_path provided does not exist")
+
+    try:
+        db_query(
+            "INSERT INTO methods_info"
+            "(method_name, method_path, method_desc, method_writeup_path)"
+            "VALUES (%s, %s, %s, %s)",
+            (
+                method_name, str(method_path),
+                method_desc, str(method_writeup_path),
+            )
+        )
+        return True
+    except Exception:
+        return False
+
+def remove_method(method_name: str) -> bool:
+    try:
+        db_query(
+            "DELETE FROM methods_info WHERE method_name = (%s)",
+            (method_name,)
+        )
+        return True
+    except psycopg2.errors.ForeignKeyViolation:
+        return False
+
+def update_method_desc(method_name: str, method_desc: str) -> None:
+    try:
+        db_query(
+            "UPDATE methods_info SET method_desc = (%s) WHERE method_name = (%s)",
+            (method_desc, method_name,)
+        )
+        return True
+    except Exception:
+        return False
+
+def update_method_writeup(method_name: str, method_writeup_path: str) -> None:
+    try:
+        db_query(
+            "UPDATE methods_info SET method_writeup_path = (%s)"
+            "WHERE method_name = (%s)",
+            (method_writeup_path, method_name,)
+        )
+        return True
+    except Exception:
+        return False
+
+def get_method_names() -> list[str]:
+    rows = db_query("SELECT method_name FROM methods_info")
+    return [row["method_name"] for row in rows]
+
+def get_method_info(method_name: str) -> dict[str, str, str, str]:
+    return db_query_one(
+        "SELECT * FROM methods_info WHERE method_name = (%s)",
+        (method_name,)
+    )

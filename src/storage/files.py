@@ -7,18 +7,6 @@ from pathlib import Path
 from storage.paths import ACTIVE_DIR, STORAGE_DIR
 
 
-@dataclass
-class PairedEndHandle:
-    r1: FileHandle
-    r2: FileHandle
-
-    def job_kwargs(self) -> dict[str, Path]:
-        return {
-            "read1": self.r1.path,
-            "read2": self.r2.path,
-        }
-
-
 class FileHandle:
     def __init__(self, path: Path, use_zip: bool = True):
         if not path.exists():
@@ -172,3 +160,16 @@ class FileHandle:
 
         dst = STORAGE_DIR / self.path.name
         self.move(dst)
+
+
+@dataclass
+class PairedEndHandle:
+    r1: FileHandle
+    r2: FileHandle
+
+    def job_kwargs(self) -> dict[str, Path]:
+        return {
+            "read1": self.r1.path,
+            "read2": self.r2.path,
+        }
+
