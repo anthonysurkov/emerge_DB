@@ -14,10 +14,10 @@ def print_method_info(method_name: str) -> None:
     )
 
 def get_emerge_writeup(screen_id: int) -> str:
-    print("Currently unimplemented")
+    raise NotImplementedError
 
 def prompt_emerge_writeup() -> None:
-    print("Currently unimplemented")
+    raise NotImplementedError
 
 def prompt_method_writeup_update() -> bool:
     options = database.get_method_names()

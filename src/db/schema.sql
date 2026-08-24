@@ -38,6 +38,7 @@ CREATE TABLE screen_metadata (
     screen_id           SERIAL PRIMARY KEY,
     target_id           TEXT NOT NULL REFERENCES hairpin_info(target_id),
     author              TEXT NOT NULL REFERENCES author_info(author),
+    enzyme              TEXT NOT NULL,
     submission_date     TIMESTAMP,
     num_reads_ordered   INT CHECK (num_reads_ordered >= 0),
     primer_seq_5        TEXT NOT NULL,

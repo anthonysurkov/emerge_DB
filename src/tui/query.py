@@ -47,6 +47,9 @@ def print_top_ten(conditions: DataConditions) -> None:
         target_ids = conditions.targets,
         seqs = conditions.sequences
     )
+    if df.empty:
+        print("No data available")
+        return
     print(df.sort_values(by="mle", ascending=False).head(10))
 
 def export(conditions: DataConditions) -> FileHandle | None:
