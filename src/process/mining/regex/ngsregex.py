@@ -5,6 +5,7 @@ import gzip
 import regex
 import re
 import os
+import sys
 from tqdm import tqdm
 from pathlib import Path
 
@@ -177,3 +178,22 @@ def regex_main(
     clean_outdir()
 
     return df
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("infile")
+    parser.add_argument("sequence")
+    parser.add_argument("--min_reads", type=int, default=10)
+    parser.add_argument("--debug", action="store_true")
+    args = parser.parse_args()
+
+    path = Path(args.infile)
+    if not path.exists():
+        raise ValueError("path does not exist")
+
+    regex_main(
+        infile=path,
+        rna_sequence=args.sequence,
+        minimum_reads=args.min_reads,
+        debug=args.debug,
+    )
