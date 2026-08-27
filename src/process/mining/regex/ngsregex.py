@@ -9,44 +9,19 @@ import sys
 from tqdm import tqdm
 from pathlib import Path
 
+from process.fastq_tooling import smart_open, sample_fastq
 from .regexhelper import prompt_for_regex
 from tui.rnatui import RNA_Prompter
+
 
 REGEX_CHUNK_SIZE  = 10000
 TEMPFILE_MAX_SIZE = 5 * 1024**3
 OUTDIR            = "regex_temps"
 
-def smart_open(path):
-    with open(path, "rb") as f:
-        magic = f.read(2)
-    if magic == b"\x1f\x8b":  # gzip magic bytes
-        return gzip.open(path, "rt", encoding="latin-1")
-    return open(path, "r", encoding="latin-1")
 
-def chunk_fastq(path, chunk_size=5000):
-    is_gzip = path.endswith(".gz")
-    total_size = None if is_gzip else os.path.getsize(path)
-    with smart_open(path) as f, tqdm(
-        total=total_size, unit="B", unit_scale=True, desc="Reading FASTQ"
-    ) as pbar:
-        records = []
-        while True:
-            start_pos = f.tell()
-            # Each read = 4 lines
-            for _ in range(chunk_size):
-                id_line = f.readline()
-                if not id_line:
-                    break
-                seq = f.readline().strip()
-                _ = f.readline()
-                qual = f.readline().strip()
-                records.append((id_line[1:].strip(), seq, qual))
-            if not records:
-                break
-            yield pd.DataFrame(records, columns=["id", "seq", "qual"])
-            records = []
-            if not is_gzip:
-                pbar.update(f.tell() - start_pos)
+def chunk_fastq(infile: Path, chunk_size=10_000) -> Iterator[pd.DataFrame]:
+    sample = sample_fastq(infile, size=chunk_size)
+    return pd.DataFrame(sample)
 
 def regex_match(seq: str, trgt: re.Pattern[str], varb: re.Pattern[str]):
     target_m = trgt.search(seq)
@@ -161,6 +136,9 @@ def clean_outdir(outdir: str = None) -> None:
 
 def regex_main(
     infile: Path,
+    regexes: tuple[re.Pattern[str], re.Pattern[str]],
+    trgt_unedited: str,
+    trgt_edited: str,
     rna_sequence: str,
     minimum_reads: int = 10,
     debug: bool = False
