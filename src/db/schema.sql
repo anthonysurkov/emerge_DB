@@ -41,10 +41,11 @@ CREATE TABLE screen_metadata (
     enzyme              TEXT NOT NULL,
     submission_date     TIMESTAMP,
     num_reads_ordered   INT CHECK (num_reads_ordered >= 0),
-    primer_seq_5        TEXT NOT NULL,
-    primer_seq_3        TEXT NOT NULL,
+    forward_primer      TEXT NOT NULL,
+    reverse_primer      TEXT NOT NULL,
     processing_date     TIMESTAMP DEFAULT now(),
-    rawdata_path        TEXT NOT NULL UNIQUE
+    r1_path             TEXT NOT NULL UNIQUE,
+    r2_path             TEXT NOT NULL UNIQUE
 );
 
 -- Junction table. Links screen_metadata with methods_info.

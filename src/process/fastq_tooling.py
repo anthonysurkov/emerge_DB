@@ -1,5 +1,6 @@
 import gzip
 from pathlib import Path
+from collections import defaultdict
 from collections.abc import Iterator, Iterable
 from itertools import islice
 

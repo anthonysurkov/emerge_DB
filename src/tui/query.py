@@ -94,13 +94,19 @@ def nl_subquery_seq(conditions: DataConditions) -> list[str] | None:
         f"Confirm sequences to add to query:\n {', '.join(seqs)}"
     ).ask()
     if confirm:
-        conditions.sequences.extend(seqs)
+        for seq in response:
+            if seq not in conditions.sequences:
+                conditions.sequences.extend(seq)
     return None
 
 def nl_subquery_authors(conditions: DataConditions) -> list[str] | None:
+    authors = database.get_authors()
+    if not authors:
+        print("No authors available")
+        return None
     response = questionary.checkbox(
         "Select authors:\n",
-        choices=database.get_authors(),
+        choices=authors,
         style=MENU_STYLE,
     ).ask()
     if response is None:
@@ -109,13 +115,19 @@ def nl_subquery_authors(conditions: DataConditions) -> list[str] | None:
         f"Confirm authors added to query:\n {', '.join(response)}"
     ).ask()
     if confirm:
-        conditions.authors.extend(response)
+        for author in response:
+            if author not in conditions.authors:
+                conditions.authors.extend(author)
     return None
 
 def nl_subquery_targets(conditions: DataConditions) -> list[str] | None:
+    target_ids = database.get_target_ids()
+    if not target_ids:
+        print("No target IDs available")
+        return None
     response = questionary.checkbox(
         "Select target IDs:\n",
-        choices=database.get_target_ids(),
+        choices=target_ids,
         style=MENU_STYLE,
     ).ask()
     if response is None:
@@ -124,7 +136,9 @@ def nl_subquery_targets(conditions: DataConditions) -> list[str] | None:
         f"Confirm targets added to query:\n {', '.join(response)}"
     ).ask()
     if confirm:
-        conditions.targets.extend(response)
+        for target in response:
+            if target not in conditions.targets:
+                conditions.targets.extend(response)
     return None
 
 def nl_query_clear(conditions: DataConditions) -> None:

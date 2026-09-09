@@ -6,33 +6,11 @@ import tui.accounts as account
 import tui.sequences as seqs
 import tui.query as query
 import tui.methods as methods
+import tui.screens as screens
 
 # DATA MANAGEMENT --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 def data_manager():
-    print("This will, in the future, provide handles on editing/deleting "
-        "registered sequences and EMERGe screens. For now, please contact "
-        "Anthony (asurkov@cmu.edu) for manual editing of the EMERGe "
-        "database system."
-    )
-
-# EMERGE REGISTRATION --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-def register_emerge():
-    print('a')
-"""
-    global SYSTEM_USER
-    if not SYSTEM_USER:
-        print("Please sign in!")
-        if not sign_in():
-            return
-
-    screens = database.get_screens_overview()
-    if screens is None:
-        print("No currently-registered screens available.")
-    else:
-        print(f"Currently-registered screens:\n {screens")
-
-    sids = get_registered_sequences()
-"""
+    raise NotImplementedError
 
 # MAIN MENU --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 def compose_main_menu(session: Session) -> tuple[dict[str, str], list]:
@@ -47,10 +25,10 @@ def compose_main_menu(session: Session) -> tuple[dict[str, str], list]:
         "Register new target sequence":
             seqs.register_hairpin,
         "Register new EMERGe screen":
-            register_emerge,
-        "Data management (e.g. edit sequences, screens)":
+            lambda: screens.register_emerge(session),
+        "(UNDER CONSTRUCTION) Data management (e.g. edit sequences, screens)":
             data_manager,
-        "Methods manager (e.g. change method write-ups)":
+        "(UNDER CONSTRUCTION) Methods manager (e.g. change method write-ups)":
             methods.manager,
         "Account manager (e.g. delete account)":
             lambda: (account.manager(session)),
@@ -62,8 +40,8 @@ def compose_main_menu(session: Session) -> tuple[dict[str, str], list]:
         "Get data",
         "Register new target sequence",
         "Register new EMERGe screen",
-        "Data management (e.g. edit sequences, screens)",
-        "Methods manager (e.g. change method write-ups)",
+        "(UNDER CONSTRUCTION) Data management (e.g. edit sequences, screens)",
+        "(UNDER CONSTRUCTION) Methods manager (e.g. change method write-ups)",
         "Account manager (e.g. delete account)",
         questionary.Separator(" "),
         "Quit",

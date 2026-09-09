@@ -74,6 +74,62 @@ def insert_hairpin_info(
 
 
 # SCREEN I/O
+def insert_screen_metadata(
+    author: str,
+    processing_date: str,
+    submission_date: str | None,
+    tid: str,
+    forward_primer: str,
+    reverse_primer: str,
+    r1_path: str,
+    r2_path: str,
+    num_reads_ordered: int,
+) -> int:
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO screen_metadata (
+                    target_id,
+                    author,
+                    submission_date,
+                    num_reads_ordered,
+                    forward_primer,
+                    reverse_primer,
+                    processing_date,
+                    r1_path,
+                    r2_path
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                RETURNING screen_id
+                """,
+                (
+                    tid,
+                    author,
+                    submission_date,
+                    num_reads_ordered,
+                    forward_primer,
+                    reverse_primer,
+                    processing_date,
+                    r1_path,
+                    r2_path,
+                ),
+            )
+            screen_id = cur.fetchone()[0]
+        conn.commit()
+
+    return screen_id
+
+def insert_emerge_data(screen_id: int, seq: str, n: int, k: int, mle: float):
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO emerge_data (screen_id, seq, n, k, mle) VALUES "
+                "(%s, %s, %s, %s, %s)",
+                (screen_id, seq, n, k, mle)
+            )
+        conn.commit()
+
 def get_screens_overview() -> dict[int, str]:
     screen_ids = db_query("SELECT DISTINCT screen_id FROM emerge_data")
     ids = tuple(row["screen_id"] for row in screen_ids)
@@ -87,16 +143,6 @@ def get_screens_overview() -> dict[int, str]:
     if target_ids is None:
         return None
     return dict(zip(screen_ids, target_ids))
-
-def insert_emerge_data(screen_id: int, seq: str, n: int, k: int, mle: float):
-    with get_conn() as conn:
-        with conn.cursor() as cur:
-            cur.execute(
-                "INSERT INTO emerge_data (screen_id, seq, n, k, mle) VALUES "
-                "(%s, %s, %s, %s, %s)",
-                (screen_id, seq, n, k, mle)
-            )
-        conn.commit()
 
 def get_screens_by_metadata(
     authors: list[str] = None,
